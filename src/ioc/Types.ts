@@ -1,3 +1,4 @@
 export const TYPES={
-    ApiService: Symbol('ApiService')
+    ApiService: Symbol('ApiService'),
+    SearchService: Symbol('SearchService')
 };
