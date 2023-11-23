@@ -30,18 +30,18 @@
               <ComboboxInput
                 class="w-full rounded-md border-0 bg-gray-100 px-4 py-2.5 text-gray-900 focus:ring-0 sm:text-sm"
                 placeholder="Search..."
-                @change="query = $event.target.value"
+                @change="searchRecords"
               />
 
               <ComboboxOptions
-                v-if="filteredPeople.length > 0"
+                v-if="searchResultsList.length > 0"
                 static
                 class="-mb-2 max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800"
               >
                 <ComboboxOption
-                  v-for="person in filteredPeople"
-                  :key="person.id"
-                  :value="person"
+                  v-for="(res, index) in searchResultsList"
+                  :key="index"
+                  :value="res"
                   as="template"
                   v-slot="{ active }"
                 >
@@ -51,7 +51,7 @@
                       active && 'bg-indigo-600 text-white'
                     ]"
                   >
-                    {{ person.name }}
+                    {{ res.foersteGlpFornavn }} {{res.foersteGlpEtternavn}}
                   </li>
                 </ComboboxOption>
               </ComboboxOptions>
@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import {
   Combobox,
   ComboboxInput,
@@ -96,9 +96,14 @@ export default defineComponent({
       TransitionRoot
   },
   methods: {},
-  props: {},
-  setup(props) {
-    const searchResults = ref([] as any[])
+  props: {
+      searchResults: {
+          type: Array,
+          required: true
+      }
+  },
+  setup(props, {emit}) {
+    const searchResultsList = ref([] as any[])
 
     const people = [
       { id: 1, name: 'Leslie Alexander', url: '#' }
@@ -119,15 +124,28 @@ export default defineComponent({
       window.location = person.url
     }
 
+    watch(
+      () => props.searchResults,
+      () => {
+        searchResultsList.value = props.searchResults;
+      }
+    );
+
     onMounted(() => {
       // alert('test');
     })
+
+    const searchRecords = (event: any) => {
+        emit("searchGraveRecords", event.target.value);
+    };
 
     return {
         filteredPeople,
         open,
         query,
-        onSelect
+        onSelect,
+        searchRecords,
+        searchResultsList
     }
   }
 })
