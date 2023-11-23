@@ -14,7 +14,8 @@ export default defineConfig({
     }
   },
   server: {
-    open: `${process.env.VUE_APP_GRAV_NO_REC_SEARCH_HOST_URL}/signin-oidc`,
+    host: true,
+    open: `/`,
     port: 11598
   }
 })
