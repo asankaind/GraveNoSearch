@@ -113,14 +113,19 @@ export default defineComponent({
       () => props.searchResults,
       () => {
         searchResultsList.value = props.searchResults;
+        if(searchResultsList.value.length ===0){
+          totalRecordCount.value = 0;
+        }
       }
     );
     
     watch(
       () => props.totalCount,
       () => {
-        totalRecordCount.value = props.totalCount;
-        showingCount.value = totalRecordCount.value > 15 ? 15 :totalRecordCount.value;
+        if(props.totalCount){
+          totalRecordCount.value = props.totalCount;
+          showingCount.value = totalRecordCount.value > 15 ? 15 :totalRecordCount.value;
+        }
       }
     );
 

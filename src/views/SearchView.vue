@@ -1,8 +1,7 @@
 <template>
     <div class="min-h-screen bg-cover" style="background-image: url('./assets/images/bg.png');">
-      <ag-grav-search-component :searchResults="searchResults" @searchGraveRecords="searchGraveRecords" />
+      <ag-grav-search-component :searchResults="searchResults" :totalCount="totalCount" @searchGraveRecords="searchGraveRecords" />
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -25,15 +24,20 @@ export default defineComponent({
     const totalCount = ref(0);
 
     const searchGraveRecords = async (searchVal: string) => {
+      if(searchVal){
+        axios({
+          method: 'get',
+          url: 'https://graverecordssearchapi.azurewebsites.net/GraveRecordsSearch/GetGraveRecord/' + searchVal + '/15/1'
+          // responseType: 'stream'
+        }).then(function (response) {
+          searchResults.value = response.data.value as any;
+          totalCount.value = response.data.totalRecordCount;
+        })
+      }else{
+        searchResults.value = []
+        totalCount.value = 0;
+      }
 
-      axios({
-        method: 'get',
-        url: 'https://graverecordssearchapi.azurewebsites.net/GraveRecordsSearch/GetGraveRecord/' + searchVal + '/15/1'
-        // responseType: 'stream'
-      }).then(function (response) {
-        searchResults.value = response.data.value as any;
-        totalCount.value = response.data.totalRecordCount;
-      })
       // await searchService.getGraveRecord('in', 100, 1)
     }
 
