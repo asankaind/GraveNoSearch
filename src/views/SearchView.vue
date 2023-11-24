@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ag-grav-search-component :searchResults="searchResults" @searchGraveRecords="searchGraveRecords" />
+    <ag-grav-search-component :searchResults="searchResults" :totalCount="totalCount" @searchGraveRecords="searchGraveRecords" />
   </div>
 </template>
 
@@ -21,21 +21,24 @@ export default defineComponent({
   setup(props) {
     // const searchService: SearchService = container.get<SearchService>(TYPES.SearchService)
     const searchResults = ref([] as any[]);
+    const totalCount = ref(0);
 
     const searchGraveRecords = async (searchVal: string) => {
 
       axios({
         method: 'get',
-        url: 'https://graverecordssearchapi.azurewebsites.net/GraveRecordsSearch/GetGraveRecord/' + searchVal + '/10/1'
+        url: 'https://graverecordssearchapi.azurewebsites.net/GraveRecordsSearch/GetGraveRecord/' + searchVal + '/15/1'
         // responseType: 'stream'
       }).then(function (response) {
         searchResults.value = response.data.value as any;
+        totalCount.value = response.data.totalRecordCount;
       })
       // await searchService.getGraveRecord('in', 100, 1)
     }
 
     return {
       searchResults,
+      totalCount,
       searchGraveRecords
     }
   }

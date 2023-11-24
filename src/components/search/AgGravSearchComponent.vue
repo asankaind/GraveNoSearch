@@ -43,6 +43,9 @@
                   </li>
                 </ComboboxOption>
               </ComboboxOptions>
+              <div v-if="totalRecordCount > 0" class="flex flex-wrap items-center bg-gray-50 px-4 py-2.5 text-xs text-gray-700">
+                <b>Showing {{ showingCount }} of {{ totalRecordCount }} records</b>
+              </div>
             </Combobox>
           </DialogPanel>
         </TransitionChild>
@@ -80,14 +83,18 @@ export default defineComponent({
   },
   methods: {},
   props: {
-      searchResults: {
-          type: Array,
-          required: true
-      }
+    searchResults: {
+      type: Array,
+      required: true
+    },
+    totalCount: {
+      type: Number
+    }
   },
   setup(props, {emit}) {
     const searchResultsList = ref([] as any[])
-
+    const totalRecordCount = ref(0);
+    const showingCount = ref(15);
 
     function onSelect(record: any) {
       // open grave record details
@@ -97,6 +104,14 @@ export default defineComponent({
       () => props.searchResults,
       () => {
         searchResultsList.value = props.searchResults;
+      }
+    );
+    
+    watch(
+      () => props.totalCount,
+      () => {
+        totalRecordCount.value = props.totalCount;
+        showingCount.value = totalRecordCount.value > 15 ? 15 :totalRecordCount.value;
       }
     );
 
@@ -112,7 +127,9 @@ export default defineComponent({
         onSelect,
         searchRecords,
         searchResultsList,
-        moment
+        moment,
+        totalRecordCount,
+        showingCount
     }
   }
 })
