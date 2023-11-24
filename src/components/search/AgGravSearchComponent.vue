@@ -66,7 +66,7 @@ import {
   TransitionChild,
   TransitionRoot
 } from '@headlessui/vue'
-import moment from "moment";
+import moment from 'moment'
 // import GraveRecordsDto from '../dto/GraveRecordDto'
 
 export default defineComponent({

@@ -17,7 +17,7 @@
     "class-transformer": "^0.5.1",
     "inversify": "^6.0.2",
     "lodash": "^4.17.21",
-    "moment": "^2.29.4",
+    "moment": "2.25.0",
     "oidc-client": "^1.11.5",
     "reflect-metadata": "^0.1.13",
     "vue": "^3.3.4",
