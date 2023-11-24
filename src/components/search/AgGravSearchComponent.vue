@@ -1,18 +1,6 @@
 <template>
-  <TransitionRoot :show="open" as="template" @after-leave="query = ''" appear>
-    <Dialog as="div" class="relative z-10" @close="open = false">
-      <TransitionChild
-        as="template"
-        enter="ease-out duration-300"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="ease-in duration-200"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity" />
-      </TransitionChild>
-
+  <TransitionRoot :show="true" as="template">
+    <Dialog as="div" class="relative z-10">
       <div class="fixed inset-0 z-10 w-screen overflow-y-auto p-4 sm:p-6 md:p-20">
         <TransitionChild
           as="template"
@@ -51,17 +39,10 @@
                       active && 'bg-indigo-600 text-white'
                     ]"
                   >
-                    {{ res.foersteGlpFornavn }} {{res.foersteGlpEtternavn}}
+                    {{ res.lastburiedFirstName }} {{res.lastburiedlastName}} {{ moment(res.lastburiedDOB).format('L') }} - {{ moment(res.lastburiedDOD).format('L') }}
                   </li>
                 </ComboboxOption>
               </ComboboxOptions>
-
-              <div
-                v-if="query !== '' && filteredPeople.length === 0"
-                class="px-4 py-14 text-center sm:px-14"
-              >
-                <p class="mt-4 text-sm text-gray-900">No people found using that search term.</p>
-              </div>
             </Combobox>
           </DialogPanel>
         </TransitionChild>
@@ -82,6 +63,8 @@ import {
   TransitionChild,
   TransitionRoot
 } from '@headlessui/vue'
+import moment from "moment";
+// import GraveRecordsDto from '../dto/GraveRecordDto'
 
 export default defineComponent({
   name: 'AgGravSearchComponent',
@@ -105,23 +88,9 @@ export default defineComponent({
   setup(props, {emit}) {
     const searchResultsList = ref([] as any[])
 
-    const people = [
-      { id: 1, name: 'Leslie Alexander', url: '#' }
-      // More people...
-    ]
 
-    const open = ref(true)
-    const query = ref('')
-    const filteredPeople = computed(() =>
-      query.value === ''
-        ? []
-        : people.filter((person) => {
-            return person.name.toLowerCase().includes(query.value.toLowerCase())
-          })
-    )
-
-    function onSelect(person) {
-      window.location = person.url
+    function onSelect(record: any) {
+      // open grave record details
     }
 
     watch(
@@ -140,12 +109,10 @@ export default defineComponent({
     };
 
     return {
-        filteredPeople,
-        open,
-        query,
         onSelect,
         searchRecords,
-        searchResultsList
+        searchResultsList,
+        moment
     }
   }
 })
