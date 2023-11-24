@@ -9,6 +9,7 @@
       "@/*": ["./src/*"]
     },
     "noImplicitAny": false,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true
   }
 }
