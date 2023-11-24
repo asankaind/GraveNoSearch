@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <ag-grav-search-component :searchResults="searchResults" @searchGraveRecords="searchGraveRecords" />
+    <div class="min-h-screen bg-cover" style="background-image: url('./assets/images/back_1.png');">
+      <ag-grav-search-component :searchResults="searchResults" @searchGraveRecords="searchGraveRecords" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import AgGravSearchComponent from '../components/search/AgGravSearchComponent.vue'
-// import SearchService from '../services/SearchService'
+
 import { container } from '../ioc/DIContainer'
 import { TYPES } from '../ioc/Types'
 import axios from 'axios'
