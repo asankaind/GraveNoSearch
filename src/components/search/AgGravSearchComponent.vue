@@ -15,11 +15,11 @@
             class="mx-auto max-w-xl transform rounded-xl bg-white p-2 shadow-2xl ring-1 ring-black ring-opacity-5 transition-all"
           >
             <Combobox @update:modelValue="onSelect">
-              <ComboboxInput
-                class="w-full rounded-md border-0 bg-gray-100 px-4 py-2.5 text-gray-900 focus:ring-0 sm:text-sm"
-                placeholder="Search..."
-                @change="searchRecords"
-              />
+              <div class="relative">
+                <MagnifyingGlassIcon class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                <ComboboxInput class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm" placeholder="Search..." @change="searchRecords" />
+              </div>
+
 
               <ComboboxOptions
                 v-if="searchResultsList.length > 0"
@@ -39,7 +39,14 @@
                       active && 'bg-indigo-600 text-white'
                     ]"
                   >
-                    {{ res.lastburiedFirstName }} {{res.lastburiedlastName}} {{ moment(res.lastburiedDOB).format('L') }} - {{ moment(res.lastburiedDOD).format('L') }}
+                    <div>
+                      {{ res.lastburiedFirstName }} {{res.lastburiedlastName}} {{ formatDateRage(res) }}
+
+                      <span style="float: right">
+                        {{ res.gravPlassKommuneNumber }} - {{ res.graveplace }}
+                      </span>
+                    </div>
+                  
                   </li>
                 </ComboboxOption>
               </ComboboxOptions>
@@ -67,6 +74,7 @@ import {
   TransitionRoot
 } from '@headlessui/vue'
 import moment from 'moment'
+import  { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 // import GraveRecordsDto from '../dto/GraveRecordDto'
 
 export default defineComponent({
@@ -79,7 +87,8 @@ export default defineComponent({
       Dialog,
       DialogPanel,
       TransitionChild,
-      TransitionRoot
+      TransitionRoot,
+      MagnifyingGlassIcon
   },
   methods: {},
   props: {
@@ -123,13 +132,26 @@ export default defineComponent({
         emit("searchGraveRecords", event.target.value);
     };
 
+    const formatDateRage = (record: any) => {
+      let dateRange = '';
+
+      if (record.firstburiedDOB !== null) {
+        dateRange = dateRange + moment(record.firstburiedDOB).format('L');
+      }
+      if (record.firstburiedDOD !== null) {
+        dateRange = dateRange + ' - ' + moment(record.firstburiedDOD).format('L');
+      }
+      return dateRange;
+    };
+
     return {
         onSelect,
         searchRecords,
         searchResultsList,
         moment,
         totalRecordCount,
-        showingCount
+        showingCount,
+        formatDateRage
     }
   }
 })

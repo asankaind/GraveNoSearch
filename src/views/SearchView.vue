@@ -3,6 +3,7 @@
     <ag-grav-search-component :searchResults="searchResults" :totalCount="totalCount" @searchGraveRecords="searchGraveRecords" />
     <div class="min-h-screen bg-cover" style="background-image: url('./assets/images/back_1.png');">
       <ag-grav-search-component :searchResults="searchResults" @searchGraveRecords="searchGraveRecords" />
+    </div>
   </div>
 </template>
 

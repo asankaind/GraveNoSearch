@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.16",
+    "@heroicons/vue": "^2.0.18",
     "axios": "^1.6.2",
     "class-transformer": "^0.5.1",
     "inversify": "^6.0.2",
